@@ -1,5 +1,7 @@
 <h2 align=center>Spherical Inward Propagating Flame of Type Ia Supernova</h2>
 
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+
 #### 1. Introduction
 
 Supernova represent the catastrophic explosions that mark the end of the life of some stars. The ejected mass is of order 1 to 10 solar masses with bulk velocities ranging from a few thousand to a few tens of thousands of km/s.[^1] The traditional single Chandrasekhar mass C–O White Dwarf burning is still considered to be responsible for a large population of type Ia supernova (SN Ia). Speciﬁcally, one of the key issues in its modeling is related to the ﬂame acceleration and deﬂagration-detonation transition (DDT), with ﬂame front instabilities being considered as a possible mechanism in driving the acceleration. The perspective of this proposal is to give a set of solutions of this problem. The milestones of this project are planed to be:
@@ -189,9 +191,9 @@ $$
 
   + reaction accelerate ratio = 20
 
-    + distribution $\rho, T, Y, \omega$ of at different time:
+    + distribution $\rho, T, Y, \omega​$ of at different time:
 
-    ![time_eval_acc20](/Users/suxy/Workspace/Shut/SIP/0-pic/time_eval_acc20.png)
+    ![time_eval_acc20](pic/time_eval_acc20.png)
 
     + flame position and flame velocity: 
 
