@@ -9,13 +9,13 @@ integer,parameter::acc = 8
 !* control boolean
 logical::ifdiff = .true.    ! ifdiff- add diffusion term or not
 logical::ifreac = .true.    ! ifreac- add reaction term or not
-logical::ifcurv = .true.   ! ifcurv- add curvature or not
+logical::ifcurv = .false.   ! ifcurv- add curvature or not
 logical::ifchec = .false.   ! ifchec- check eigenvalue or not
 logical::ifstop = .false.   ! ifstop- check if stop
 logical::ifsave = .true.    ! ifsave- save data file or not
 !* main parameters
 real(kind=acc),parameter::Le=1e5         ! Le-   Lewis number
-real(kind=acc),parameter::dx=0.05        ! dx-   space step size
+real(kind=acc),parameter::dx=0.02        ! dx-   space step size
 real(kind=acc),parameter::tstp=1         ! tstp- timestep, when to save
 real(kind=acc),parameter::tend=2000       ! tend- time end, when to stop
 real(kind=acc),parameter::mdt=0.5*dx**2. ! mdt-  minimal dt
@@ -32,13 +32,13 @@ real(kind=acc),parameter::Tig=1.2d0   ! Tig- ignite temprature
 real(kind=acc),parameter::Yin=1.0d0    ! Yin- initial concentration
 real(kind=acc),parameter::Yig=1.0d0    ! Yig- ignite concentration
 real(kind=acc),parameter::Vin=1.1e-5   ! Vin- initial velocity
-real(kind=acc),parameter::Ace=20.0d0     ! Ace- accelerate ratio
+real(kind=acc),parameter::Ace=1.0d0     ! Ace- accelerate ratio
 real(kind=acc),parameter::Ea=84.0d0    ! Ea-  active energy
 
 integer,parameter::totN=1000000000   ! totN-  total number of timesteps
-integer,parameter::bx=100/dx           ! bx-    start points num in r-dir
-integer,parameter::nx=120/dx          ! nx-    points num in r-dir
-integer,parameter::tx=1/dx           ! tx-    turb num in x-dir
+integer,parameter::bx=10/dx           ! bx-    start points num in r-dir
+integer,parameter::nx=100/dx          ! nx-    points num in r-dir
+integer,parameter::tx=10/dx           ! tx-    turb num in x-dir
 integer,parameter::ex=6              ! ex-    extra num in x-dir
 integer,parameter::bxm=bx-ex         ! bxm-   x_min_range
 integer,parameter::nxm=nx+ex         ! nxm-   x_max_range

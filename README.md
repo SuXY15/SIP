@@ -1,16 +1,14 @@
 <h2 align=center>Spherical Inward Propagating Flame of Type Ia Supernova</h2>
 
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
-
 #### 1. Introduction
 
-Supernova represent the catastrophic explosions that mark the end of the life of some stars. The ejected mass is of order 1 to 10 solar masses with bulk velocities ranging from a few thousand to a few tens of thousands of km/s.[^1] The traditional single Chandrasekhar mass C–O White Dwarf burning is still considered to be responsible for a large population of type Ia supernova (SN Ia). Speciﬁcally, one of the key issues in its modeling is related to the ﬂame acceleration and deﬂagration-detonation transition (DDT), with ﬂame front instabilities being considered as a possible mechanism in driving the acceleration. The perspective of this proposal is to give a set of solutions of this problem. The milestones of this project are planed to be:
+Supernova represent the catastrophic explosions that mark the end of the life of some stars. The ejected mass is of order 1 to 10 solar masses with bulk velocities ranging from a few thousand to a few tens of thousands of km/s.[^1] The traditional single Chandrasekhar mass C–O White Dwarf burning is still considered to be responsible for a large population of type Ia supernova (SN Ia). Specifically, one of the key issues in its modeling is related to the flame acceleration and deflagration-detonation transition (DDT), with flame front instabilities being considered as a possible mechanism in driving the acceleration. The perspective of this proposal is to give a set of solutions of this problem. The milestones of this project are planed to be:
 
 ​	(a) Complete a set of code that can solve the simplest reacting flow in SN Ia conditions.
 
 ​	(b) Try to observe spherical flame acceleration with large Lewis number curvature effect.
 
-​	(c) Try to observe deﬂagration-detonation transition (DDT) in (b).
+​	(c) Try to observe deflagration-detonation transition (DDT) in (b).
 
 #### 2. Basic Equations
 
@@ -53,27 +51,27 @@ Supernova represent the catastrophic explosions that mark the end of the life of
       
       $$ \hat E_s = \hat E_{(\rho,T)}+\frac{1}{2}\hat u^2+q\hat Y$$
 
-      $$\hat  P = \frac{\hat \rho \hat E_{(\rho,T)}}{3} $$
+      $$\hat  P = \frac{\hat \rho \hat E_{(\rho,T)}}{3} ​$$
 
 #### 3. Dimensionless Equations
 
 | Dimensionless variables | Reference values |
 |--------------------|---------|
-| $ \rho = \frac{\hat{\rho}}{\hat{\rho_0}} $                     |  $ \hat{\rho_0} = 3.5*10^{10} kg/m^3 $ |
-| $ u  = \frac{\hat u}{\hat{u_0}} $                                  | $ \hat{u_0} = C_t S_c,  S_c = 466m/s $ (laminar flame speed) |
-| $ t  = \frac{\hat t}{\hat{t_0}} $                                     | $ \hat{t_0} =\frac{\delta_f}{\hat u_0}, \frac{\delta_f}{S_c}=1.93*10^{-6} s $ |
-| $ E = \frac{\hat E}{\hat E(\hat{T_b},\hat{\rho_0})} $  | $\hat E(\hat{T_b},\hat{\rho_0})=\frac{3}{4\hat{\rho_0}}(3\pi^2)^{1/3}\hat hc_1(N\hat{\rho_0})^{4/3} + \frac{1}{2} N \frac{(3\pi^2)^{2/3}}{3\hat h c_1}(\frac{1}{\hat{\rho_0} N})^{1/3} (k \hat{T_b})^2 = 6.1927*10^{13}J $ |
-| $ T = \frac{\hat T-\hat{T_0}}{\hat T_{ad}-\hat{T_0}}$ | $ \hat{T_0}=1*10^8 K;  \hat{T_{ad}}=3.2*10^9 K $ |
-| $ Y = \frac{\hat Y}{\hat{Y_0}} $                                  | $ \hat{Y_0} = 1 $ |
-| $ r = \frac{\hat r}{\hat {r_0}} $                                    | $ \hat {r_0} = \delta_f = \frac{\lambda}{\rho_0 C_p S_c}=9*10^{-4} m $ |
-| $ \omega = \frac{\hat \omega}{\hat {\omega_0}} $    | $ \hat {\omega_0} = \frac{\hat{\rho_0}\hat{Y_0}S_c}{\delta_f}= \hat \omega(\hat {Y_0},\hat{T_0},\hat{\rho_0}) $ |
-| $ P =  \frac{\hat P}{\hat{P_0}} $                                 | $ \hat{P_0} = \frac{\hat{\rho_0}{\hat E(\hat{T_b},\hat{\rho_0})}}{3} $ |
+| $$ \rho = \frac{\hat{\rho}}{\hat{\rho_0}} $$                 | $$ \hat{\rho_0} = 3.5*10^{10} kg/m^3 $$ |
+| $$ u  = \frac{\hat u}{\hat{u_0}} $$                               | $$ \hat{u_0} = C_t S_c,  S_c = 466m/s $$ (laminar flame speed) |
+| $$ t  = \frac{\hat t}{\hat{t_0}} $$                                    | $$ \hat{t_0} =\frac{\delta_f}{\hat u_0}, \frac{\delta_f}{S_c}=1.93*10^{-6} s $$ |
+| $$ E = \frac{\hat E}{\hat E(\hat{T_b},\hat{\rho_0})} $$  | $$\hat E(\hat{T_b},\hat{\rho_0})=\frac{3}{4\hat{\rho_0}}(3\pi^2)^{1/3}\hat hc_1(N\hat{\rho_0})^{4/3} + \frac{1}{2} N \frac{(3\pi^2)^{2/3}}{3\hat h c_1}(\frac{1}{\hat{\rho_0} N})^{1/3} (k \hat{T_b})^2 = 6.1927*10^{13}J $$ |
+| $$ T = \frac{\hat T-\hat{T_0}}{\hat T_{ad}-\hat{T_0}} $$ | $$ \hat{T_0}=1*10^8 K;  \hat{T_{ad}}=3.2*10^9 K $$ |
+| $$ Y = \frac{\hat Y}{\hat{Y_0}} $$                                  | $$ \hat{Y_0} = 1 $$ |
+| $$ r = \frac{\hat r}{\hat {r_0}} $$                                    | $$ \hat {r_0} = \delta_f = \frac{\lambda}{\rho_0 C_p S_c}=9*10^{-4} m $$ |
+| $$ \omega = \frac{\hat \omega}{\hat {\omega_0}} $$    | $$ \hat {\omega_0} = \frac{\hat{\rho_0}\hat{Y_0}S_c}{\delta_f}= \hat \omega(\hat {Y_0},\hat{T_0},\hat{\rho_0}) $$ |
+| $$ P =  \frac{\hat P}{\hat{P_0}} $$                                 | $$ \hat{P_0} = \frac{\hat{\rho_0}{\hat E(\hat{T_b},\hat{\rho_0})}}{3} $$ |
 
-Consider velocity dimensionless with sound speed $A_1=\hat E(\hat{\rho_0},\hat{T_b})/\hat u_0^2=1$
+Consider velocity dimensionless with sound speed $$A_1=\hat E(\hat{\rho_0},\hat{T_b})/\hat u_0^2=1$$
 
-Enthalpy per unit is $ \text{qcon} = \frac{\lambda(\hat {T_b}-\hat{T_0})}{\hat{\rho_0}S_c\delta_f \hat E(\hat{\rho_0},\hat{T_b}) } = \frac{E(\hat{\rho_0},\hat{T_b})-E(\hat{\rho_0},\hat{T_0})}{E(\hat{\rho_0},\hat{T_b})} = 0.21811 $
+Enthalpy per unit is $$ \text{qcon} = \frac{\lambda(\hat {T_b}-\hat{T_0})}{\hat{\rho_0}S_c\delta_f \hat E(\hat{\rho_0},\hat{T_b}) } = \frac{E(\hat{\rho_0},\hat{T_b})-E(\hat{\rho_0},\hat{T_0})}{E(\hat{\rho_0},\hat{T_b})} = 0.21811 $$
 
-Another constant $A_2=\text{qcon}\times S_c/\hat u_0=1.460\times10^{-5}$
+Another constant $$A_2=\text{qcon}\times S_c/\hat u_0=1.460\times10^{-5}​$$
 
 + Governing Equations:
 
@@ -146,7 +144,7 @@ $$
 
     `Roe` method: solve convection flux by eigen vector
 
-  + Diffusion term: 7 order central difference
+  + Diffusion term: 6 order central difference
     $$
     \frac{\partial m_i}{\partial x} = \frac{1}{60}m_{i+3}-\frac{9}{60}m_{i+2}+\frac{45}{60}m_{i+1}-\frac{45}{60}m_{i-1}+\frac{9}{60}m_{i-2}-\frac{1}{60}m_{i-3}
     $$
@@ -199,11 +197,19 @@ $$
 
   ![flame_vel_acc=20](pic/flame_vel_acc=20.png)
 
-  ​	Accelerate as exponential function type and propagates with maximum velocity about 0.05 sound speed
+  + no reaction acceleration but with wider reaction position
+
+    + distribution $\rho, T, Y, \omega$ of at different time:
+
+    ![time_eval_acc20](pic/time_eval_noacc_wider.png)
+
+    + flame position and flame velocity: 
+
+  ![flame_vel_acc](pic/flame_vel_noacc_wider.png)
+
+  Accelerate as exponential function type and propagates with maximum velocity about 0.05 sound speed
 
 + 1D sphercial coordinates:
-
-
 
 
 
@@ -219,7 +225,7 @@ $$
   \frac{P E_{Tb}}{\rho} = \frac{3}{4}(3\pi^2)^{\frac{1}{3}}\hbar c_1 N^{\frac{3}{4}} \hat \rho_0^{\frac{1}{3}} \rho^{\frac{1}{3}} + \frac{1}{2}N^{\frac{2}{3}}(3\pi^2)^{\frac{2}{3}}\frac{k^2}{3\hbar c_1} \hat T^2 \hat \rho_0^{-\frac{1}{3}} \rho^{-\frac{1}{3}}
 $$
   + Set $C_1$, $C_2$ as:
-    + $$C_1 = \frac{3}{4}(3\pi^2)^{\frac{1}{3}}\hbar c_1 N^{\frac{4}{3}} \hat \rho_0^{\frac{1}{3}}$$
+    + $$ C_1 = \frac{3}{4}(3\pi^2)^{\frac{1}{3}}\hbar c_1 N^{\frac{4}{3}} \hat \rho_0^{\frac{1}{3}} $$
     + $$ C_2 = \frac{1}{2}N^{\frac{2}{3}}(3\pi^2)^{\frac{2}{3}}\frac{k^2}{3\hbar c_1} \hat \rho_0^{-\frac{1}{3}} $$
 
   + Set $$ x = \rho^{\frac{2}{3}} $$
@@ -239,7 +245,7 @@ $$
   \rho = ( \sqrt{\frac{P E_{Tb}}{C_1}+\frac{C_2^2 \hat T^4}{4C_1^2}}-\frac{C_2 \hat T^2}{2C_1} ) ^{\frac{3}{2}}
 $$
 
-+ Calculate $\hat T$ from​ $\rho$ and $P$:
++ Calculate $\hat T$ from $\rho$ and $P$:
 
 
   + Consider:
@@ -276,29 +282,30 @@ $$
 
   + Eigenvalue $\Lambda$ is:
     $$
-    \begin{align}
+    \begin{aligned}
     \Lambda&=diag(m_2/m_1, m_2/m_1, m_2/m_1 + 2^{1/2}*(- m_2^2 + 2*m_1*m_3 - 2*m_1*m_4*qcon)^{1/2}/(3*m_1), m_2/m_1 - 2^{1/2}*(- m_2^2 + 2*m_1*m_3 - 2*m_1*m_4*qcon)^{1/2}/(3*m_1)]\\
     &=diag(u,u,u+c,u-c)
-    \end{align}
+    \end{aligned}
     $$
 
   + Sound velocity:
     $$
-    \begin{align}
+    \begin{aligned}
     c&=2^{1/2}*(- m_2^2 + 2*m_1*m_3 - 2*m_1*m_4*qcon)^{1/2}/(3*m_1)\\
     &=\frac{2}{3}\sqrt{-\frac{1}{2}u^2+E_s-\text{qcon} Y}
     =\frac{2}{3}\sqrt{P/\rho}
-    \end{align}
+    \end{aligned}
     $$
 
   + Right Eigen Matrix $RM$ is:
+
     $$
-    \begin{align*}
+    \begin{aligned}
     RM=&[ (2*m_1^2)/m_2^2, &-(2*m_1^2*qcon)/m_2^2, &m_1/m_4, &m_1/m_4] \\
     &[ (2*m_1)/m_2, &-(2*m_1*qcon)/m_2, &(3*m_2 + 2^{1/2}*(- m_2^2 + 2*m_1*m_3 - 2*m_1*m_4*qcon)^{1/2})/(3*m_4), &(3*m_2 - 2^{1/2}*(- m_2^2 + 2*m_1*m_3 - 2*m_1*m_4*qcon)^{1/2})/(3*m_4)] \\
     &[ 1, &0, &(m_2*(3*m_2 + 2^{1/2}*(- m_2^2 + 2*m_1*m_3 - 2*m_1*m_4*qcon)^{1/2}))/(3*m_1*m_4) - (7*m_2^2 - 8*m_1*m_3 + 2*m_1*m_4*qcon)/(6*m_1*m_4), &(m_2*(3*m_2 - 2^{1/2}*(- m_2^2 + 2*m_1*m_3 - 2*m_1*m_4*qcon)^{1/2}))/(3*m_1*m_4) - (7*m_2^2 - 8*m_1*m_3 + 2*m_1*m_4*qcon)/(6*m_1*m_4)] \\
     &[ 0, &1, &1, &1]
-    \end{align*}
+    \end{aligned}
     $$
 
 
