@@ -1,0 +1,67 @@
+&PARA
+
+!===============================================================
+!= control boolean
+ifsave = .true.
+ifdiff = .true.     ! ifdiff- add diffusion term or not
+ifreac = .true.     ! ifreac- add reaction term or not
+ifcurv = .true.    ! ifcurv- add curvature or not
+ifchec = .false.    ! ifchec- check eigenvalue or not
+ifstop = .false.    ! ifstop- check if stop
+ifconp = .true.     ! ifconp- if const pressure initialization
+
+!===============================================================
+!= main parameters
+Le     = 1e7        ! Le-   Lewis number
+dx     = 0.05       ! dx-   space step size
+tstp   = 10         ! tstp- timestep, when to save
+tend   = 10000      ! tend- time end, when to stop
+cfl    = 0.5        ! cfl-  Courant-Friedichs-Lewy condition
+scale  = 1.0        !       the velocity fractor
+bl     = 1          ! bl-   inner bound position (dimensionless)
+nl     = 50.        ! nl-   outer bound position (dimensionless)
+tl     = 1          ! tl-   perturb range length (dimensionless)
+pl     = 1          ! pl-   plane range length (dimensionless)
+                    !                       - - - !
+                    !                     /       !
+                    !                    /        ! 
+                    !                   /         !
+                    !-------------------          ! 
+                    !                  |    |    |!
+                    !bx                  tx   px  !nx
+                    !bx               tlx  trx    !nx
+
+!===============================================================
+!= physical input
+rho_0 = 3.5e10
+rho_b = 3.5e10
+T_0 = 0.1e9
+T_b = 3.2e9
+Ea  = 84.165
+
+!===============================================================
+!= init condition
+Tin    = 0.1d0      ! Tin- initial temprature
+Yin    = 1.0d0      ! Yin- initial concentration
+Pin    = 0.782      ! Pin- initial pressure
+Vin    = 1.d-8      ! Vin- initial velocity
+
+Tig    = 1.1d0      ! Tig- ignite temprature
+Yig    = 1.0d0      ! Yig- ignite concentration
+Pig    = 1.0d0      ! Pig- ignite pressure
+
+Ace    = 1.0d0      ! Ace- chemical accelerate ratio
+
+!===============================================================
+!= other parameters
+direct =-1          !    = 1 means outward propagation
+                    !    =-1 inward
+
+                    ! boundary type
+                    !    = 0 means symmetric
+                    !    = 1 means opening
+                    !    = 2 means reflective & adiabatic wall
+bc_l   = 1          ! left boundary
+bc_r   = 1          ! right boundary
+
+/

@@ -1,21 +1,5 @@
 #!/usr/bin/python 
-import os,sys,time
-import numpy as np
-import matplotlib.pyplot as plt
-import re
-
-def as_num(x):
-    if x[0]=='N':
-        print("NaN !!")
-        return -1e10
-    m=re.compile("E").split(x)
-    return float(m[0])*10**int(m[1])
-
-C_t = 360.515
-# C_t = 37555.7641
-A_1 = 1410435417.714647/(C_t**2)
-A_2 = 0.007019709312750/C_t
-qcon= 0.007019709312750
+from utils import *
 
 if __name__ == "__main__":
     if len(sys.argv)<2:
@@ -31,19 +15,23 @@ if __name__ == "__main__":
 
     count = 0
     for line in lines:
-        while line[0]==' ':
-            line = line[1:]
-        if count==0:
-            data.append([str(x) for x in re.split(' |\n',line) if x!=''])
+        beg = 0
+        while line[beg]==' ':
+            beg += 1
+        line = line[beg:]
+        if count == 0:
+            pass
+        elif count == 1:
+            data.append([str(x).strip('\n').strip('"') for x in 
+                line.split(' ') if x!='' and x!="VARIABLES="])
+        elif count == 2:
+            pass
         else:
             data.append([as_num(x) for x in re.split(' ',line) if x!=''])
         count += 1
-
-    print(data[0])
-    print(" rows:",count)
-
+    print(" rows:", len(data[0]))
     col_num = len(data[0])
-    row_num = count
+    row_num = len(data)
 
     values = [0 for i in range(col_num)]
     for col in range(col_num):
@@ -52,14 +40,14 @@ if __name__ == "__main__":
             msg.append(data[row][col])
         values[col]=msg
 
-    fig=plt.figure()
+    fig, axs = plt.subplots(col_num-1, 1, figsize=(6,10))
+    fig.subplots_adjust(bottom=0.05, top=0.95, left=0.15, right=0.95, hspace=0.3)
     for col in range(1,col_num):
-        plt.subplot(col_num-1,1,col)
-        #plt.figure(str(data[0][col]))
-        plt.plot(values[0],values[col],'.-',ms=2)
-        plt.xlabel(str(data[0][0]))
-        plt.ylabel(str(data[0][col]))
-
+        ax = axs[col-1]
+        ax.plot(values[0],values[col],'.-',ms=2)
+        ax.set_xlabel(str(data[0][0]))
+        ax.set_ylabel(str(data[0][col]))
+        
     # plt.figure()
     # plt.subplot(3,1,1) # rho u^2 + P / r
     # ru2 = np.dot(np.dot(values[2],values[6]),values[6])

@@ -1,1 +1,7 @@
 local
+data
+bin
+refs
+doc
+*/__pycache__
+*.DS_Store*

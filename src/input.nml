@@ -1,0 +1,69 @@
+&PARA
+
+data_dir = 'data/'
+
+!===============================================================
+!* control boolean
+!===============================================================
+ifsave = .true.     ! ifsave- save data file or not
+ifdiff = .false.    ! ifdiff- add diffusion term or not
+ifreac = .true.     ! ifreac- add reaction term or not
+ifcurv = .false.    ! ifcurv- add curvature or not
+ifchec = .false.    ! ifchec- check eigenvalue or not
+ifstop = .false.    ! ifstop- check if stop (if=true, only run 1 step)
+
+
+!===============================================================
+!* main parameters
+!===============================================================
+dx     = 0.02       ! dx-   space step size
+tstp   = 1          ! tstp- timestep, when to save
+tend   = 1000       ! tend- time end, when to stop
+cfl    = 0.25       ! cfl-  Courant-Friedichs-Lewy condition
+bl     = 1          ! bl-   inner bound position (dimensionless)
+nl     = 50.        ! nl-   outer bound position (dimensionless)
+tl     = 1          ! tl-   perturb range length (dimensionless)
+pl     = 1          ! pl-   plane range length (dimensionless)
+                    !                       - - - !
+                    !                     /       !
+                    !                    /        ! 
+                    !                   /         !
+                    !-------------------          ! 
+                    !                  |    |    |!
+                    !bx                  tx   px  !nx
+                    !bx               tlx  trx    !nx
+
+
+!===============================================================
+!* physical input
+!===============================================================
+! Le       = 1e0         ! Le-   Lewis number
+! reac_acc = 1e0       ! acc-  reaction rate accelerate ratio
+
+
+!===============================================================
+!* init condition
+!===============================================================
+! Din    = 1.0d0      ! Din- initial density
+! Vin    = 1.d-8      ! Vin- initial velocity
+! Tin    = 0.2d0      ! Tin- initial temprature
+! Yin    = 1.0d0      ! Yin- initial concentration
+
+! Tig    = 0.8d0      ! Tig- igniting temprature
+! Yig    = 0.2d0      ! Yig- igniting concentration
+
+
+!===============================================================
+!* other parameters
+!===============================================================
+direct = 1          !    = 1 for outward propagation
+                    !    =-1 for inward propagation
+
+                    ! boundary type
+                    !    = 0 means symmetric
+                    !    = 1 means opening
+                    !    = 2 means reflective & adiabatic wall
+bc_l   = 1          ! left boundary
+bc_r   = 1          ! right boundary
+
+/

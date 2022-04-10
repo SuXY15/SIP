@@ -1,25 +1,13 @@
 #!/usr/bin/python 
-import os,sys,time
-import numpy as np
-import matplotlib.pyplot as plt
-import re
+from utils import *
 from threading import Thread
 
 global fignum
 
-def as_num(x):
-    if x[0]=='a':
-        print("NaN !!")
-        return 0
-    m=re.compile("E").split(x)
-    return float(m[0])*10**int(m[1])
-
 def run(fileList,jump=1):
-    fig = plt.figure("displayData")
-    ax = fig.add_subplot(111)
-
+    
     for i,filename in enumerate(fileList):
-        if(i%jump==0):
+        if(i%jump==0) and filename.split('/')[-1][:4]=="data":
             fin = open(filename,'r')
             lines = fin.readlines()
             print(filename,"\tlines:",len(lines),end='')
@@ -30,40 +18,52 @@ def run(fileList,jump=1):
                 while line[beg]==' ':
                     beg += 1
                 line = line[beg:]
-                if count==0:
-                    data.append([str(x) for x in line.split(' ') if x!=''])
+                if count == 0:
+                    pass
+                elif count == 1:
+                    data.append([str(x).strip('\n').strip('"') for x in 
+                        line.split(' ') if x!='' and x!="VARIABLES="])
+                elif count == 2:
+                    pass
                 else:
                     data.append([as_num(x) for x in re.split(' ',line) if x!=''])
                 count += 1
-            print(" rows:",count)
+            print(" rows:", len(data[0]))
             col_num = len(data[0])
-            row_num = count
+            row_num = len(data)
+            
+            if i==0:
+                fig, axs = plt.subplots(col_num-1, 1, figsize=(6,10))
+                fig.subplots_adjust(bottom=0.05, top=0.95, left=0.15, right=0.95, hspace=0.3)
+
             values = [0 for i in range(col_num)]
             for col in range(col_num):
                 msg = []
                 for row in range(1,row_num):
                     msg.append(data[row][col])
                 values[col]=msg
-            plt.clf()
+            
             for col in range(1,col_num):
-                plt.subplot(col_num-1,1,col)
-                plt.plot(values[0],values[col],'.-',ms=0.6,lw=0.4)
-                plt.xlabel(str(data[0][0]))
-                plt.ylabel(str(data[0][col]))
+                ax = axs[col-1]
+                ax.cla()
+                ax.plot(values[0],values[col],'.-',ms=0.6,lw=0.4)
+                ax.set_xlabel(str(data[0][0]))
+                ax.set_ylabel(str(data[0][col]))
             plt.pause(0.001)
-
+    plt.ioff()
+    plt.show()
 
 if __name__ == "__main__":
     fileList = []
     jump = 1
-    if len(sys.argv)==2:
-
-        jump = int(sys.argv[1])
+    path = sys.argv[1]
     
-    path = '.'
+    if len(sys.argv)>2:
+        jump = int(sys.argv[2])
+        
     for files in os.listdir(path):
         filename = os.path.join(path,files)
-        if os.path.isfile(filename) and filename[-4:-1]=='.tx':
+        if os.path.isfile(filename) and filename[0:4]=='data':
             fileList.append(filename)
     if len(fileList)<1:
         print("one data file is necessary!")
