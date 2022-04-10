@@ -41,6 +41,7 @@ if __name__ == "__main__":
         values[col]=msg
 
     fig, axs = plt.subplots(col_num-1, 1, figsize=(6,10))
+    fig.suptitle(filename)
     fig.subplots_adjust(bottom=0.05, top=0.95, left=0.15, right=0.95, hspace=0.3)
     for col in range(1,col_num):
         ax = axs[col-1]
@@ -48,8 +49,8 @@ if __name__ == "__main__":
         ax.set_xlabel(str(data[0][0]))
         ax.set_ylabel(str(data[0][col]))
     
-    fig, ax = plt.subplots(figsize=(6,6))
-    plot_contour(ax, np.array(values[0]), cdiff(values[2])/cdiff(values[0]))
+    #fig, ax = plt.subplots(figsize=(6,6))
+    #plot_contour(ax, np.array(values[0]), cdiff(values[2])/cdiff(values[0]))
     
     plt.show()
 

@@ -57,8 +57,12 @@ implicit none
         !* now U = U^(n+1)
 
         !* display calculating status
-        write(*,'("nt=",I8,"  dt=",1e10.3,"  t=",1e10.3,"  ",1e10.3)') nt, dt, time
+#ifdef supernova
+        write(*,'("[S] nt=",I8,"  dt=",1e10.3,"  t=",1e10.3,"  ",1e10.3)') nt, dt, time
+#else
+        write(*,'("[H] nt=",I8,"  dt=",1e10.3,"  t=",1e10.3,"  ",1e10.3)') nt, dt, time
 
+#endif
         !* output when sample
         if ((time/tstp) .gt. count) then
             count = count + 1
@@ -176,7 +180,7 @@ contains
         do i = bx-ex/2, nx+ex/2
             ll(i,1) = 0.0d0
             ll(i,2) = 0.0d0
-            ll(i,3) = lambda * atx(i) / dx ! + rho(i) * alpha / Le * Q * ayx(i) / dx
+            ll(i,3) = lambda * atx(i) / dx + rho(i) * alpha / Le * Q * ayx(i) / dx
             ll(i,4) = rho(i) * alpha / Le * ayx(i) / dx
         end do
 
@@ -192,7 +196,7 @@ contains
         if (ifcurv) then
             do i = bx, nx
                 fffd(i,3) = fffd(i,3) + lambda * atx(i) * 2./(x(i)+ep)
-                ! fffd(i,3) = fffd(i,3) + rho(i) * Q *  alpha / Le * ayx(i) * 2./(x(i)+ep)
+                fffd(i,3) = fffd(i,3) + rho(i) * Q *  alpha / Le * ayx(i) * 2./(x(i)+ep)
                 fffd(i,4) = fffd(i,4) + rho(i) * alpha / Le * ayx(i) * 2./(x(i)+ep)
             end do
         end if

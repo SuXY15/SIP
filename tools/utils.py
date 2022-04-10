@@ -54,12 +54,12 @@ def cdiff(data):
     return np.array([0]+list(np.diff(data)/2))+np.array(list(np.diff(data)/2)+[0])
 
 def plot_contour(ax, r, v):
-    x = np.linspace(-np.max(r), np.max(r), 256)
-    y = np.linspace(-np.max(r), np.max(r), 256)
+    x = np.linspace(-np.max(r), np.max(r), 512)
+    y = np.linspace(-np.max(r), np.max(r), 512)
     Y, X = np.meshgrid(x, y)
     R = np.sqrt(X**2 + Y**2)
-    f = interpolate.interp1d(r, v, fill_value=np.nan, bounds_error=False)
+    f = interpolate.interp1d(r, np.abs(v), fill_value=np.nan, bounds_error=False)
     V = f(R.flatten()).reshape(R.shape)
     
-    ax.contour(X, Y, V, cmap='Greys', vmin=-3, vmax=3)
+    ax.contour(X, Y, V, cmap='Greys', vmin=0, vmax=10)
     ax.axis("equal")

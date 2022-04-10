@@ -13,3 +13,18 @@ Supernova represent the catastrophic explosions that mark the end of the life of
 ​	(e) Try to observe deflagration-detonation transition (DDT) in (d).
 
 For more details, please refer to [TheoryGuide.pdf](TheoryGuide.pdf)
+
+### 1. Usage
+
+Please refer to the [Makefile](Makefile) and input namelist in `src` directory.
+
+### 2. Results
+
++ Outward Hydrogen-Oxygen flame ($t=220\mu s$ and $t=440\mu s$, compiled without `-Dsupernova` and use the input `src/input_hydrogen_outward.nml`), initial acceleration and curvature effects are observed in the detected flame speed.
+
+  <img src="/home/suxy15/Workspace/SIP/figs/hydrogen_outward_t=200.png"  style="width:48%;" /> <img src="/home/suxy15/Workspace/SIP/figs/hydrogen_outward_t=400.png"  style="width:48%;" />
+
++ Planar Supernova flame ($t=25$ and $t=40$), not sure for the correctness. The reaction rate coefficients, diffusivities and many other properties are unknown for sure. (compiled with `-Dsupernova` and use the input `src/input_supernova_planar.nml`).
+  <img src="/home/suxy15/Workspace/SIP/figs/supernova_planar_t=25.png"  style="width:48%;" /><img src="/home/suxy15/Workspace/SIP/figs/supernova_planar_t=40.png"  style="width:48%;" />
+  
+  

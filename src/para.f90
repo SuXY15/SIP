@@ -47,8 +47,8 @@ save
 #ifdef supernova
     real(kdp)::Le       = 1e0          ! Le-       Lewis number
     real(kdp)::gamma    = 4./3.        ! gamma-    heat capacity ratio 
-    real(kdp)::lambda   = 0.14541      ! lambda-   heat conductivity           (dimensionless)
-    real(kdp)::alpha    = 2./3.        ! alpha-    diffusivity D = alpha / Le  (dimensionless)
+    real(kdp)::lambda   = 0.145 * 1e-3 ! lambda-   heat conductivity           (dimensionless)
+    real(kdp)::alpha    = 2./3.* 1e-3  ! alpha-    diffusivity D = alpha / Le  (dimensionless)
     real(kdp)::Q        = 0.904        ! Q-        heat value                  (dimensionless)
     real(kdp)::eos_C1   = 2.60559e-1   ! eos_C1-   C1 of equation of state
     real(kdp)::eos_C2   = 6.82973e-2   ! eos_C2-   C2 of equation of state
@@ -60,8 +60,8 @@ save
     real(kdp)::Vin = 0.0d0             ! Vin-      initial velocity
     real(kdp)::Tin = 0.1d0             ! Tin-      initial temprature
     real(kdp)::Yin = 1.0d0             ! Yin-      initial concentration
-    real(kdp)::Tig = 1.0d0             ! Tig-      igniting temprature
-    real(kdp)::Yig = 1.0d0             ! Yig-      igniting concentration
+    real(kdp)::Tig = 0.8d0             ! Tig-      igniting temprature
+    real(kdp)::Yig = 0.2d0             ! Yig-      igniting concentration
     real(kdp)::reac_acc = 1.0d0        ! reac_acc- reaction rate accelerate ratio
 #else
     real(kdp)::Le       = 1.2          ! Le-       Lewis number
@@ -161,8 +161,8 @@ contains
 #ifdef supernova
 
     ! EOS: calculate pre from rho and T
-    real(kdp) function EOS_pre_forward(rho_i, T_i)
-        real(kdp), intent(in)::rho_i, T_i
+    real(kdp) function EOS_pre_forward(rho_i, T_i, Y_i)
+        real(kdp), intent(in)::rho_i, T_i, Y_i
         EOS_pre_forward = eos_C1*rho_i**(4./3.) + eos_C2*rho_i**(2./3.)*T_i**2
     end function EOS_pre_forward
 
@@ -172,21 +172,31 @@ contains
         EOS_pre_backward = rho_i*gamma1*(E_i - 0.5*vex_i**2 - Q*Y_i)
     end function EOS_pre_backward
 
+    ! EOS: calculate E from rho, pre and vex
+    real(kdp) function EOS_E(rho_i, pre_i, vex_i, Y_i)
+        real(kdp),intent(in)::rho_i, pre_i, vex_i, Y_i
+        EOS_E = pre_i / rho_i / gamma1 + 0.5*vex_i**2 + Q*Y_i
+    end function EOS_E
+    
     ! EOS: calculate rho from T, pre
-    real(kdp) function EOS_rho(T_i, pre_i)
-        real(kdp),intent(in)::T_i, pre_i
+    real(kdp) function EOS_rho(pre_i, T_i, Y_i)
+        real(kdp),intent(in)::pre_i, T_i, Y_i
         real(kdp)::tmp, rho23 ! rho**(2./3.)
         rho23 = (-eos_C2 * T_i**2 + sqrt(eos_C2**2*T_i**4 + 4.*pre_i*eos_C1))/2/eos_C1
         EOS_rho = rho23**(3./2.)
     end function EOS_rho
     
     ! EOS: calculate T from rho, pre
-    real(kdp) function EOS_T(rho_i, pre_i)
-        real(kdp),intent(in)::rho_i, pre_i
+    real(kdp) function EOS_T(rho_i, pre_i, Y_i)
+        real(kdp),intent(in)::rho_i, pre_i, Y_i
         real(kdp)::tmp
         tmp = (pre_i-eos_C1*rho_i**(4./3.))
         if (tmp < 0.) then
             write(*,*) "NaN in EOS_T, T^2 =", tmp / eos_C2 / rho_i**(2./3.)
+            
+            write(*,*) pre_i, rho_i, eos_C1*rho_i**(4./3.)
+            stop
+            
             ifstop = .true.
             tmp = abs(tmp)
         endif

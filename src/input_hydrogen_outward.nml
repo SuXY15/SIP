@@ -6,16 +6,17 @@ data_dir = 'data/'
 !* control boolean
 !===============================================================
 ifsave = .true.     ! ifsave- save data file or not
-ifdiff = .true.    ! ifdiff- add diffusion term or not
+ifdiff = .true.     ! ifdiff- add diffusion term or not
 ifreac = .true.     ! ifreac- add reaction term or not
-ifcurv = .false.    ! ifcurv- add curvature or not
+ifcurv = .true.     ! ifcurv- add curvature or not
 ifchec = .false.    ! ifchec- check eigenvalue or not
 ifstop = .false.    ! ifstop- check if stop (if=true, only run 1 step)
+
 
 !===============================================================
 !* main parameters
 !===============================================================
-dx     = 0.01       ! dx-   space step size
+dx     = 0.02       ! dx-   space step size
 tstp   = 1          ! tstp- timestep, when to save
 tend   = 1000       ! tend- time end, when to stop
 cfl    = 0.25       ! cfl-  Courant-Friedichs-Lewy condition
@@ -36,19 +37,21 @@ pl     = 1          ! pl-   plane range length (dimensionless)
 !===============================================================
 !* physical input
 !===============================================================
-Le       = 1.0       ! Le-   Lewis number
+Le       = 1.2       ! Le-   Lewis number
 reac_acc = 1e0       ! acc-  reaction rate accelerate ratio
+
 
 !===============================================================
 !* init condition
 !===============================================================
 Din    = 1.0d0      ! Din- initial density
 Vin    = 0.0        ! Vin- initial velocity
-Tin    = 0.1d0      ! Tin- initial temprature
+Tin    = 1.0d0      ! Tin- initial temprature
 Yin    = 1.0d0      ! Yin- initial concentration
 
-Tig    = 0.8d0      ! Tig- igniting temprature
-Yig    = 0.2d0      ! Yig- igniting concentration
+Tig    = 8.0d0      ! Tig- igniting temprature
+Yig    = 0.3d0      ! Yig- igniting concentration
+
 
 !===============================================================
 !* other parameters

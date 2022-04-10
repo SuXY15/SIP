@@ -110,7 +110,7 @@ contains
             Y(i)   = Yin
             T(i)   = Tin
         end do
-
+                
         !* burnt/ignition temperature
         do i = slx, tlx
             T(i) = Tig
@@ -136,6 +136,8 @@ contains
             ! pre(i) = EOS_pre_forward( rho(i), T(i) )
             E(i) = EOS_E( rho(i), pre(i), vex(i), Y(i) )
         end do
+        
+        write(*,*) rho(bx)
         
         !* init for U
         call push_data(bx, nx)

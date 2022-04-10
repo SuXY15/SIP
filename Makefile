@@ -2,7 +2,7 @@ PROGRAM := SIP
 FC      := gfortran
 FCFLAGS := -c -ffree-line-length-none
 FCFLAGS += -g -fbacktrace -fno-align-commons -fbounds-check
-FDFLAGS := -Ddebug
+FDFLAGS := -Ddebug -Dsupernova
 FLFLAGS := 
 
 BINDIR := bin
@@ -30,7 +30,7 @@ $(BINDIR)/init.o: $(BINDIR)/para.o
 $(BINDIR)/main.o: $(BINDIR)/init.o
 
 supernova:
-	export FDFLAGS="$(FDFLAGS) -Dsupernova"
+	$(FDFLAGS)="$(FDFLAGS) -Dsupernova"
 	make default
 
 clean:
