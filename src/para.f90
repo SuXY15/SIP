@@ -18,8 +18,8 @@ save
     real(kdp),parameter::N_   = 500*6.0221413e23 ! Avogadro constant
     
     !* numerical constants
-    real(kdp),parameter::ep   = 1.e-20           ! ep- epsilon for numerical non-zero division
-    real(kdp),parameter::ev   = 1e-8             ! ev- epsilon for non-zero velocity
+    real(kdp),parameter::ep   = 1e-20            ! ep- epsilon for numerical non-zero division
+    real(kdp),parameter::ev   = 1e-20            ! ev- epsilon for non-zero velocity
     real(kdp),parameter::n1_2 = 1./2.
     real(kdp),parameter::n1_3 = 1./3.
     real(kdp),parameter::n2_3 = 2./3.
@@ -64,21 +64,20 @@ save
     real(kdp)::Yig = 1.0d0             ! Yig-      igniting concentration
     real(kdp)::reac_acc = 1.0d0        ! reac_acc- reaction rate accelerate ratio
 #else
-    real(kdp)::Le       = 0.3          ! Le-       Lewis number
-    real(kdp)::gamma    = 1.4          ! gamma-    heat capacity factor
-    real(kdp)::R_u      = 1.0          ! R_u-      specific gas constant       (dimensionless)
-    real(kdp)::lambda   = 1.7e-4       ! lambda-   heat conductivity           (dimensionless)
-    real(kdp)::alpha    = 4.4e-4       ! alpha-    diffusivity D = alpha / Le  (dimensionless)
-    real(kdp)::Q        = 9.256        ! Q-        heat value                  (dimensionless)
-    real(kdp)::reac_A   = 32.7         ! reac_A-   pre-exponential factor      (dimensionless)
+    real(kdp)::Le       = 1.2          ! Le-       Lewis number
+    real(kdp)::gamma    = 1.3          ! gamma-    heat capacity factor
+    real(kdp)::lambda   = 3.9e-4       ! lambda-   heat conductivity           (dimensionless)
+    real(kdp)::alpha    = 6.6e-3       ! alpha-    diffusivity D = alpha / Le  (dimensionless)
+    real(kdp)::Q        = 36           ! Q-        heat value                  (dimensionless)
+    real(kdp)::reac_A   = 21.9         ! reac_A-   pre-exponential factor      (dimensionless)
     real(kdp)::reac_Ea  = 27           ! reac_Ea-  activation energy           (dimensionless)
     
     !* case parameters
     real(kdp)::Din = 1.0d0             ! Din-      initial density
-    real(kdp)::Vin = 0.0d0             ! Vin-      initial velocity
+    real(kdp)::Vin = 0.                ! Vin-      initial velocity
     real(kdp)::Tin = 1.0d0             ! Tin-      initial temprature
     real(kdp)::Yin = 1.0d0             ! Yin-      initial concentration
-    real(kdp)::Tig = 10.0d0            ! Tig-      igniting temprature
+    real(kdp)::Tig = 8.0d0             ! Tig-      igniting temprature
     real(kdp)::Yig = 0.3d0             ! Yig-      igniting concentration
     real(kdp)::reac_acc = 1.0          ! reac_acc- reaction rate accelerate ratio
 #endif
@@ -90,7 +89,7 @@ save
     real(kdp)::tl                      ! tl-       perturb range length
     real(kdp)::pl                      ! pl-       plane range length
 
-    integer::totN = 100000             ! totN-     total number of timesteps
+    integer::totN = 1000000            ! totN-     total number of timesteps
     integer::bxm                       ! bxm-      x_min_range
     integer::nxm                       ! nxm-      x_max_range
 
@@ -201,29 +200,43 @@ contains
     end function reaction_rate
     
 #else
+    ! EOS: E = e + u**2 / 2
+    !      e = T / (gamma-1) + Q Y
+    !      p = rho (gamma-1) (e - Q Y)
+    !      h = E + p/rho
     
-    ! EOS: calculate pre from rho and T
-    real(kdp) function EOS_pre_forward(rho_i, T_i)
-        real(kdp), intent(in)::rho_i, T_i
-        EOS_pre_forward = rho_i * R_u * T_i
+    ! EOS: calculate pre from rho, T and Y
+    real(kdp) function EOS_pre_forward(rho_i, T_i, Y_i)
+        real(kdp), intent(in)::rho_i, T_i, Y_i
+        ! EOS_pre_forward = rho_i * T_i + rho_i * gamma1 * Q * Y_i
+        EOS_pre_forward = rho_i * T_i
     end function EOS_pre_forward
 
-    ! EOS: calculate pre from rho, vex, E and Y
+    ! EOS: calculate pre from rho, vex and E
     real(kdp) function EOS_pre_backward(rho_i, vex_i,  E_i, Y_i)
         real(kdp),intent(in)::rho_i, vex_i, E_i, Y_i
-        EOS_pre_backward = rho_i*gamma1*(E_i - 0.5*vex_i**2 - Q*Y_i)
+        ! EOS_pre_backward = rho_i*gamma1*(E_i - 0.5*vex_i**2)
+        EOS_pre_backward = rho_i*gamma1*(E_i - 0.5*vex_i**2 - Q * Y_i)
     end function EOS_pre_backward
-
-    ! EOS: calculate rho from T, pre
-    real(kdp) function EOS_rho(T_i, pre_i)
-        real(kdp),intent(in)::T_i, pre_i
-        EOS_rho = pre_i / R_u / T_i
+    
+    ! EOS: calculate E from rho, pre and vex
+    real(kdp) function EOS_E(rho_i, pre_i, vex_i, Y_i)
+        real(kdp),intent(in)::rho_i, pre_i, vex_i, Y_i
+        ! EOS_E = pre_i / rho_i  / gamma1 + vex_i * vex_i / 2.
+        EOS_E = pre_i / rho_i  / gamma1 + vex_i * vex_i / 2. + Q * Y_i
+    end function EOS_E
+    
+    ! EOS: calculate rho from pre, T and Y
+    real(kdp) function EOS_rho(pre_i, T_i, Y_i)
+        real(kdp),intent(in)::pre_i, T_i, Y_i
+        ! EOS_rho = pre_i / (T_i / gamma1 + Q * Y_i) / gamma1
+        EOS_rho = pre_i / T_i
     end function EOS_rho
     
-    ! EOS: calculate T from rho, pre
-    real(kdp) function EOS_T(rho_i, pre_i)
-        real(kdp),intent(in)::rho_i, pre_i
-        EOS_T = pre_i / R_u / rho_i
+    ! EOS: calculate T from rho, pre and Y_i
+    real(kdp) function EOS_T(rho_i, pre_i, Y_i)
+        real(kdp),intent(in)::rho_i, pre_i, Y_i
+        EOS_T = pre_i / rho_i
     end function EOS_T
     
     ! CKM: calculate
@@ -262,7 +275,7 @@ contains
                 Y(i) = 1.0
             endif
             pre(i) = EOS_pre_backward(rho(i), vex(i), E(i), Y(i))
-            T(i)   = EOS_T(rho(i), pre(i))
+            T(i)   = EOS_T(rho(i), pre(i), Y(i))
         end do
     end subroutine load_data
 end module mod_para

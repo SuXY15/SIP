@@ -116,21 +116,21 @@ Supernova represent the catastrophic explosions that mark the end of the life of
 
 #### 2.3 Parameters for $H_2$-$O_2$ flame
 
-+ Reference state ($H_2:O_2=2:1$)
++ Reference state ($H_2:O_2=2:1$), examined in [tools/test_h2o2_flame.py](tools/test_h2o2_flame.py)
   + pressure $p_0=1.013\times 10^5$ [$Pa$]
   + specific gas constant $R_u=692.25$ [$J/kg/K$]
   + temperature $T_0=300$ [$K$]
   + density $\rho_0=p_0/R_uT_0=0.4879$ [$kg/m^3$]
   + heat capacity ratio $\gamma=1.4$
   + velocity $u_0=\sqrt{R_uT_0}=455.7m/s$ ($S_L\approx10m/s$)
-  + flame thickness $\delta_f\approx 5mm= 5\times 10^{-4} m$
+  + flame thickness $\delta_f\approx 1mm= 1\times 10^{-3} m$
   + time scale $t_0=\delta_f/u_0=1.1\times10^{-6}$ [$s$]
   + heat value $Q\approx 36 R_uT_0$ [$J/kg$] (300K->3076K)
-  + thermal conductivity $\lambda\approx0.13$ [$W/m/K$]
-  + thermal diffusivity $\alpha\approx 1\times10^{-4}$ [$m^2/s$]
-  + Lewis number $Le\approx 0.3$
+  + thermal conductivity $\lambda\approx0.3$ [$W/m/K$]
+  + thermal diffusivity $\alpha\approx 1.5\times10^{-3}$ [$m^2/s$]
+  + Lewis number $Le\approx 1.2$
   + activation energy $Ea \approx 27 R_u T_0$
-  + pre-exponential factor $A\approx 1\times10^7$ ?
+  + pre-exponential factor $A\approx 2\times10^7$ ?
 
 
 

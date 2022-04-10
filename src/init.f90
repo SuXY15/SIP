@@ -103,7 +103,7 @@ contains
         endif
 
         !* init with const pressure
-        Pin = EOS_pre_forward(Din, Tin)
+        Pin = EOS_pre_forward(Din, Tin, Yin)
         do i = bx, nx
             pre(i) = Pin
             vex(i) = Vin
@@ -132,9 +132,9 @@ contains
         
         !* cal rho from pre & T, cal E from rho & T
         do i = bx,nx
-            rho(i) = EOS_rho(T(i), pre(i))
-            ! pre(i) = EOS_pre_forward(rho(i), T(i))
-            E(i) = pre(i)/rho(i)/gamma1 + 0.5*vex(i)**2 + Q*Y(i)
+            rho(i) = EOS_rho( pre(i), T(i), Y(i) )
+            ! pre(i) = EOS_pre_forward( rho(i), T(i) )
+            E(i) = EOS_E( rho(i), pre(i), vex(i), Y(i) )
         end do
         
         !* init for U

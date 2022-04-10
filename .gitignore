@@ -3,5 +3,6 @@ data
 bin
 refs
 doc
+SIP
 */__pycache__
 *.DS_Store*

@@ -2,6 +2,7 @@ import os, sys, time
 import numpy as np
 import matplotlib.pyplot as plt
 import re
+from scipy import interpolate
 
 pi   = np.pi
 h_   = 6.6260693e-34
@@ -51,3 +52,14 @@ def cdiff(data):
     if len(data)==1:
         return np.array([0])
     return np.array([0]+list(np.diff(data)/2))+np.array(list(np.diff(data)/2)+[0])
+
+def plot_contour(ax, r, v):
+    x = np.linspace(-np.max(r), np.max(r), 256)
+    y = np.linspace(-np.max(r), np.max(r), 256)
+    Y, X = np.meshgrid(x, y)
+    R = np.sqrt(X**2 + Y**2)
+    f = interpolate.interp1d(r, v, fill_value=np.nan, bounds_error=False)
+    V = f(R.flatten()).reshape(R.shape)
+    
+    ax.contour(X, Y, V, cmap='Greys', vmin=-3, vmax=3)
+    ax.axis("equal")

@@ -20,6 +20,7 @@ def sim_0D(Tin = 1000):
     plt.plot(states.t, states.T)
     plt.xlim([0, 2*idt])
 
+    print("sim_0D, thermal_conductivity =", gas.thermal_conductivity)
 
 # 0D with global reaction
 def global_0D(Tin = 1000):
@@ -59,7 +60,7 @@ def sim_1D():
 
     f = ct.FreeFlame(gas, width=0.03)
     f.set_refine_criteria(ratio=3, slope=0.06, curve=0.12)
-    f.transport_model = "Mix"
+    f.transport_model = "Multi"
     f.solve(loglevel=0, auto=True)
 
     print("S_L =", f.velocity[0])
@@ -68,15 +69,24 @@ def sim_1D():
 
     fig, axs = plt.subplots(3, 1, figsize=(4,6))
     fig.subplots_adjust(top=0.95, right=0.95, left=0.2, bottom=0.1, wspace=0.35)
-
     axs[0].plot(f.grid, f.T)
     axs[0].set_ylabel("Temperature")
-
     axs[1].plot(f.grid, f.density)
     axs[1].set_ylabel("Density")
-
     axs[2].plot(f.grid, f.velocity)
-    axs[2].set_ylabel("Velocity")
+    axs[2].set_ylabel("velocity")
+
+    fig, axs = plt.subplots(3, 1, figsize=(4,6))
+    fig.subplots_adjust(top=0.95, right=0.95, left=0.2, bottom=0.1, wspace=0.35)
+    axs[0].plot(f.grid, f.cp / f.cv)
+    axs[0].set_ylabel("gamma")
+    species_diff = [np.dot(f.Y[:,i], f.mix_diff_coeffs[:,i]) for i in range(len(f.grid))]
+    axs[1].plot(f.grid, f.thermal_conductivity)
+    axs[1].set_ylabel("f.thermal_conductivity")
+    axs[2].plot(f.grid, f.thermal_conductivity / f.density / f.cp, label="thermal alpha")
+    axs[2].plot(f.grid, species_diff, label="species D")
+    axs[2].set_ylabel("diffusivity")
+    axs[2].legend()
 
 
 sim_0D(1000)

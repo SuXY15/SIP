@@ -6,7 +6,7 @@ implicit none
     call bc
     call init_show
     call save_data
-
+    
     do nt = 1, totN
         call bc       ! set boundary conditions
         call diff     ! calculate the diffusion part
@@ -85,7 +85,7 @@ contains
     subroutine bc
     integer::L,R
         !* TYPE 0: symmetric boundary conditions
-        if (bc_l.eq.0 .or. (bc_l.eq.2 .and. count.eq.1)) then
+        if (bc_l.eq.0) then
             do i = 1, ex
                 L = bx - i
                 R = bx + i - 1
@@ -95,7 +95,7 @@ contains
                 U(L, 4) = U(R, 4)
             end do
         endif
-        if (bc_r.eq.0 .or. (bc_r.eq.2 .and. count.eq.1)) then
+        if (bc_r.eq.0) then
             do i = 1, ex
                 R = nx + i
                 L = nx - i + 1
@@ -129,7 +129,7 @@ contains
         endif
 
         !* TYPE 2: reflective & adiabatic wall boundary conditions
-        if (bc_l.eq.2 .and. count.ne.1) then
+        if (bc_l.eq.2) then
             do i = 1, ex
                 L = bx - i
                 R = bx + i
@@ -139,7 +139,7 @@ contains
                 U(L, 4) = U(R, 4)
             end do
         endif
-        if (bc_r.eq.2 .and. count.ne.1) then
+        if (bc_r.eq.2) then
             do i=1, ex
                 R = nx + i
                 L = nx - i
@@ -176,8 +176,8 @@ contains
         do i = bx-ex/2, nx+ex/2
             ll(i,1) = 0.0d0
             ll(i,2) = 0.0d0
-            ll(i,3) = atx(i)/dx
-            ll(i,4) = rho(i)*ayx(i)/dx
+            ll(i,3) = lambda * atx(i) / dx ! + rho(i) * alpha / Le * Q * ayx(i) / dx
+            ll(i,4) = rho(i) * alpha / Le * ayx(i) / dx
         end do
 
         !* cal fffd
@@ -192,8 +192,8 @@ contains
         if (ifcurv) then
             do i = bx, nx
                 fffd(i,3) = fffd(i,3) + lambda * atx(i) * 2./(x(i)+ep)
-                fffd(i,3) = fffd(i,3) + rho(i)* Q *  alpha / Le * ayx(i) * 2./(x(i)+ep)
-                fffd(i,4) = fffd(i,4) + rho(i)* alpha / Le * ayx(i) * 2./(x(i)+ep)
+                ! fffd(i,3) = fffd(i,3) + rho(i) * Q *  alpha / Le * ayx(i) * 2./(x(i)+ep)
+                fffd(i,4) = fffd(i,4) + rho(i) * alpha / Le * ayx(i) * 2./(x(i)+ep)
             end do
         end if
     end subroutine diff
@@ -210,7 +210,7 @@ contains
     real(kdp),dimension(bxm:nxm,eqn)::ff,fh        ! ff-    fh-
     real(kdp),dimension(bxm:nxm,eqn,2)::gg,hh      ! gg-    hh-
     real(kdp)::w0, w1                              ! w0 w1 weight for interp
-    real(kdp)::rho_m, vex_m, pre_m, E_m, Y_m, H_m
+    real(kdp)::rho_m, vex_m, pre_m, E_m, Y_m, H_m, Q_m
     real(kdp)::K_1, K_2, K_3, K_4
     real(kdp)::c_m, err, cvel
     real(kdp)::t0,t1,t2,t3,s1,s2,s3
@@ -256,6 +256,10 @@ contains
         am(4) = am(4) * 1.1
         em = max(em, max(am(3),am(4)))
 
+        
+        Q_m = Q     ! if p = rho(RT/(gamma-1)+QY)/(gamma-1), Q_m = 0.
+                    ! if p = rho*R*T                         Q_m = Q
+        
         !* cal evr & evl
         do i = bx-1, nx
             !* Compute e'vectors using Roe's average:
@@ -275,7 +279,7 @@ contains
             K_1 = gamma1 * vex_m * vex_m / 2
             K_2 = gamma1 * (-vex_m)
             K_3 = gamma1
-            K_4 = gamma1 * (-Q)
+            K_4 = gamma1 * (-Q_m)
             
             !* evr: right e'vectors of Jaccobi Matrix
             evr(i,1,1) = 1./c_m
@@ -290,7 +294,7 @@ contains
             
             evr(i,3,1) = H_m / c_m - vex_m
             evr(i,3,2) = vex_m * vex_m / c_m / 2.
-            evr(i,3,3) = Q / c_m
+            evr(i,3,3) = Q_m / c_m
             evr(i,3,4) = H_m / c_m + vex_m
             
             evr(i,4,1) = Y_m / c_m
@@ -302,22 +306,22 @@ contains
             evl(i,1,1) =  vex_m / 2. + gamma1 * vex_m * vex_m / c_m / 4.
             evl(i,1,2) =  -1./2. - gamma1 * vex_m / c_m / 2.
             evl(i,1,3) =  gamma1 / c_m / 2.
-            evl(i,1,4) = -gamma1 * Q / c_m / 2.
+            evl(i,1,4) = -gamma1 * Q_m / c_m / 2.
             
             evl(i,2,1) =  c_m - gamma1 * vex_m * vex_m / c_m / 2.
             evl(i,2,2) =  gamma1 * vex_m / c_m
             evl(i,2,3) = -gamma1 / c_m
-            evl(i,2,4) =  gamma1 * Q / c_m
+            evl(i,2,4) =  gamma1 * Q_m / c_m
 
             evl(i,3,1) = -Y_m * gamma1 * vex_m * vex_m / c_m / 2.
             evl(i,3,2) =  Y_m * gamma1 * vex_m / c_m
             evl(i,3,3) = -Y_m * gamma1 / c_m 
-            evl(i,3,4) =  c_m + Y_m * gamma1 * Q / c_m
+            evl(i,3,4) =  c_m + Y_m * gamma1 * Q_m / c_m
 
             evl(i,4,1) = -vex_m / 2. + gamma1 * vex_m * vex_m / c_m / 4.
             evl(i,4,2) =  1. / 2. - gamma1 * vex_m / c_m / 2.
             evl(i,4,3) =  gamma1 / c_m / 2.
-            evl(i,4,4) = -gamma1 * Q / c_m / 2.
+            evl(i,4,4) = -gamma1 * Q_m / c_m / 2.
 
             !* check eigenvalues
             if (ifchec) then

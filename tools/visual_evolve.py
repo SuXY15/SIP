@@ -35,6 +35,10 @@ def run(fileList,jump=1):
             if i==0:
                 fig, axs = plt.subplots(col_num-1, 1, figsize=(6,10))
                 fig.subplots_adjust(bottom=0.05, top=0.95, left=0.15, right=0.95, hspace=0.3)
+                
+                fig, bx = plt.subplots(figsize=(6,6))
+                
+    
 
             values = [0 for i in range(col_num)]
             for col in range(col_num):
@@ -49,6 +53,10 @@ def run(fileList,jump=1):
                 ax.plot(values[0],values[col],'.-',ms=0.6,lw=0.4)
                 ax.set_xlabel(str(data[0][0]))
                 ax.set_ylabel(str(data[0][col]))
+            
+            bx.cla()
+            plot_contour(bx, np.array(values[0]), cdiff(values[2])/cdiff(values[0]))
+            
             plt.pause(0.001)
     plt.ioff()
     plt.show()

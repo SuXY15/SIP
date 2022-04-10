@@ -6,9 +6,9 @@ data_dir = 'data/'
 !* control boolean
 !===============================================================
 ifsave = .true.     ! ifsave- save data file or not
-ifdiff = .false.    ! ifdiff- add diffusion term or not
+ifdiff = .true.     ! ifdiff- add diffusion term or not
 ifreac = .true.     ! ifreac- add reaction term or not
-ifcurv = .false.    ! ifcurv- add curvature or not
+ifcurv = .true.     ! ifcurv- add curvature or not
 ifchec = .false.    ! ifchec- check eigenvalue or not
 ifstop = .false.    ! ifstop- check if stop (if=true, only run 1 step)
 
@@ -21,7 +21,7 @@ tstp   = 1          ! tstp- timestep, when to save
 tend   = 1000       ! tend- time end, when to stop
 cfl    = 0.25       ! cfl-  Courant-Friedichs-Lewy condition
 bl     = 1          ! bl-   inner bound position (dimensionless)
-nl     = 50.        ! nl-   outer bound position (dimensionless)
+nl     = 20.        ! nl-   outer bound position (dimensionless)
 tl     = 1          ! tl-   perturb range length (dimensionless)
 pl     = 1          ! pl-   plane range length (dimensionless)
                     !                       - - - !
@@ -63,7 +63,7 @@ direct = 1          !    = 1 for outward propagation
                     !    = 0 means symmetric
                     !    = 1 means opening
                     !    = 2 means reflective & adiabatic wall
-bc_l   = 1          ! left boundary
+bc_l   = 2          ! left boundary
 bc_r   = 1          ! right boundary
 
 /

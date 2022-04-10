@@ -1,6 +1,6 @@
 #!/usr/bin/python 
 from utils import *
-
+    
 if __name__ == "__main__":
     if len(sys.argv)<2:
         print("one arguement is necessary!")
@@ -47,19 +47,9 @@ if __name__ == "__main__":
         ax.plot(values[0],values[col],'.-',ms=2)
         ax.set_xlabel(str(data[0][0]))
         ax.set_ylabel(str(data[0][col]))
-        
-    # plt.figure()
-    # plt.subplot(3,1,1) # rho u^2 + P / r
-    # ru2 = np.dot(np.dot(values[2],values[6]),values[6])
-    # ru2p = ru2+np.array(values[1])/3
-    # plt.plot(-np.diff(ru2p)/np.diff(values[0]))
     
-    # plt.subplot(3,1,2) # 2 / r * rho u^2  
-    # ru2x = 2*ru2/np.array(values[0])
-    # plt.plot(-ru2x)
-
-    # plt.subplot(3,1,3) # 
-    # plt.plot(-np.diff(ru2p)/np.diff(values[0])-ru2x[1:])
-
+    fig, ax = plt.subplots(figsize=(6,6))
+    plot_contour(ax, np.array(values[0]), cdiff(values[2])/cdiff(values[0]))
+    
     plt.show()
 
