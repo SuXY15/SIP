@@ -25,6 +25,7 @@ Please refer to the [Makefile](Makefile) and input namelist in `src` directory.
   <img src="./figs/hydrogen_outward_t=200.png"  style="width:48%;" /> <img src="./figs/hydrogen_outward_t=400.png"  style="width:48%;" />
 
 + Planar Supernova flame ($t=25$ and $t=40$), not sure for the correctness. The reaction rate coefficients, diffusivities and many other properties are unknown for sure. (compiled with `-Dsupernova` and use the input `src/input_supernova_planar.nml`).
+  
   <img src="./figs/supernova_planar_t=25.png"  style="width:48%;" /><img src="./figs/supernova_planar_t=40.png"  style="width:48%;" />
   
   
